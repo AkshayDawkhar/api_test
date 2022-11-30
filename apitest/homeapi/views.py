@@ -17,19 +17,33 @@ dis = [dict(),
        ]
 
 
-@api_view(['POST', 'GET'])
+def print_data():
+    for i in dis:
+        print(i.get('rollno'), i.get('name'), i.get('Class'), i.get('time'), sep='\t')
+
+
+@api_view(['POST', 'GET', 'DELETE'])
 def homeapi(request):
+    print('\n\n\n', request.method, 'method is called')
     if request.method == 'POST':
-        print('POST method is called')
+        print_data()
         return Response(
             dis
         )
+    if request.method == 'DELETE':
+
+        if request.query_params:
+            print('--------------------------------')
+        roli = int(request.query_params['rollno'])
+
+        if int(request.data['rollno']):
+            print("========================================")
+            roli = 3
+        dis.pop(3)
+        return Response(dis[3])
+    
     if request.method == 'GET':
         ri = int(request.query_params['rollno'])
         return Response(dis[ri])
-    for i in dis:
-        print(i.get('rollno'), i.get('name'), i.get('Class'), i.get('time'), sep='\t')
+
     # print(for i in dis)
-    return Response(
-        dis
-    )
