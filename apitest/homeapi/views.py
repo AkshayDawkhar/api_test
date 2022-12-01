@@ -22,7 +22,7 @@ def print_data():
         print(i.get('rollno'), i.get('name'), i.get('Class'), i.get('time'), sep='\t')
 
 
-@api_view(['POST', 'GET', 'DELETE'])
+@api_view(['POST', 'GET', 'DELETE','PUT','PATCH'])
 def homeapi(request):
     print('\n\n\n', request.method, 'method is called')
     if request.method == 'POST':
@@ -41,7 +41,18 @@ def homeapi(request):
             roli = 3
         dis.pop(3)
         return Response(dis[3])
-    
+    if request.method == 'PUT':
+        dis[int(request.data['rollno'])] = dict(rollno=int(request.data['rollno']), name=request.data['name'], Class=request.data['class'], time=str(datetime.datetime.now()))
+        # print(dict(rollno=int(request.data['rollno']), name=request.data['name'], Class=request.data['class'],
+        #      time=str(datetime.datetime.now())))
+
+        # print(dis[int(request.data['rollno'])])
+        print_data()
+        return Response()
+    if request.method == 'PATCH':
+        print(request.auth)
+        return Response()
+
     if request.method == 'GET':
         ri = int(request.query_params['rollno'])
         return Response(dis[ri])
